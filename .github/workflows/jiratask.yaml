@@ -18,7 +18,8 @@ on:
     types: [created]
 jobs:
   create:
-    if: (github.event_name == 'issues' || github.event_name == 'pull_request') && github.event.action == 'opened'
+#    if: (github.event_name == 'issues' || github.event_name == 'pull_request') && github.event.action == 'opened'
+    if: github.event_name == 'issues' && github.event.action == 'opened'
     runs-on: ubuntu-latest
     name: Create task
     steps:
