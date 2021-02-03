@@ -18,23 +18,23 @@ on:
     types: [created]
 jobs:
   create:
-#    if: (github.event_name == 'issues' || github.event_name == 'pull_request') && github.event.action == 'opened'
+    if: (github.event_name == 'issues' || github.event_name == 'pull_request') && github.event.action == 'opened'
     runs-on: ubuntu-latest
     name: Create task
     steps:
-    - name: Check if community user
-      id: github-team-role
-      run: |
-        TEAM=vault
-        ROLE="$(hub api orgs/hashicorp/teams/${TEAM}/memberships/${{ github.actor }} | jq -r '.role | select(.!=null)')"
-        if [[ -n ${ROLE} ]]; then
-          echo "Actor ${{ github.actor }} is a ${TEAM} team member, skipping Jira ticket creation"
-        else
-          echo "Actor ${{ github.actor }} is not a ${TEAM} team member, continuing to Jira ticket creation"
-        fi
-        echo "::set-output name=role::${ROLE}"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#    - name: Check if community user
+#      id: github-team-role
+#      run: |
+#        TEAM=vault
+#        ROLE="$(hub api orgs/hashicorp/teams/${TEAM}/memberships/${{ github.actor }} | jq -r '.role | select(.!=null)')"
+#        if [[ -n ${ROLE} ]]; then
+#          echo "Actor ${{ github.actor }} is a ${TEAM} team member, skipping Jira ticket creation"
+#        else
+#          echo "Actor ${{ github.actor }} is not a ${TEAM} team member, continuing to Jira ticket creation"
+#        fi
+#        echo "::set-output name=role::${ROLE}"
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
     - name: Login Jira
       if: ${{ !steps.github-team-role.outputs.role }}
